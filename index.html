@@ -3,10 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
+    <title>Note Website</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/react-icons@4.11.0/fa/index.js"></script>
+    <style>
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+
+        /* Base styles */
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        /* Custom animation */
+        @keyframes matrix-rain {
+            0% { text-shadow: 0 0 1px #0f0; }
+            50% { text-shadow: 0 0 8px #0f0; }
+            100% { text-shadow: 0 0 1px #0f0; }
+        }
+
+        .matrix-animation {
+            animation: matrix-rain 2s infinite;
+        }
+
+        /* Utility classes */
+        .min-h-screen { min-height: 100vh; }
+        .bg-black { background-color: black; }
+        .bg-gray-900 { background-color: #111827; }
+        .text-green-500 { color: #22c55e; }
+        .border-green-500 { border-color: #22c55e; }
+        .text-center { text-align: center; }
+        .p-4 { padding: 1rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .font-mono { font-family: monospace; }
+        .flex { display: flex; }
+        .justify-center { justify-content: center; }
+        .gap-2 { gap: 0.5rem; }
+        .whitespace-pre-line { white-space: pre-line; }
+    </style>
 </head>
 <body>
-    <h1>Welcome to My Website!</h1>
-    <p>This is a sample website hosted on GitHub Pages.</p>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Data
+        const notes = {
+            'Note': [
+                {
+                    id: 'best-practices',
+                    title: 'Reply',
+                    content: `Perfect, We offer part/time or full/time jobs that take 30-60 minutes and earn an income of 200-650 USD. You can settle daily.`
+                },
+                {
+                    id: 'job-offer',
+                    title: 'Requirements-1',
+                    content: `Before starting work: Are you a US citizen &  US PR? Are you 25 or older? We ask the age to avoid hiring under-ages. Please confirm to me Yes or No.`
+                },
+                {
+                    id: 'or',
+                    title: 'OR',
+                    content: ``
+                },
+                {
+                    id: 'job-offer2',
+                    title: 'Requirements-2',
+                    content: `Before starting work, you will need to answer whether you meet our requirements.
+*Must be between 25-80 year old
+*US Citizen or US Permanent Resident
+Please answer Yes or No.`
+                },
+                {
+                    id: 'job-offer1',
+                    title: 'END',
+                    content: `Thank you! The person in charge will directly contact your Whats-app within 24 hours to explain the job details and income. Please check! have a nice day.`
+                }
+            ],
+            'Greeting': [
+                {
+                    id: 'greeting1',
+                    title: 'Greeting 1',
+                    content: "Welcome! I'm Diana from Soltech Company, We may have a job offer that is perfect for you. Could I tell you the specifics? Reply Yes or No"
+                }
+                // ... Add more greetings as needed
+            ],
+            'Return': [
+                {
+                    id: 'return1',
+                    title: 'Return 1',
+                    content: "No need to share your personal information. If you meet our requirements, just answer Yes or No."
+                }
+                // ... Add more returns as needed
+            ],
+            'FQA': [
+                {
+                    id: 'FQA',
+                    title: 'About The Job',
+                    content: `This job is a remote job related to digital marketing where all you will do is review and rate our various client products on a sales website.
+This is a side hustle you can start anytime, anywhere.`
+                }
+                // ... Add more FAQs as needed
+            ]
+        };
+
+        // Utility function for clipboard
+        const copyToClipboard = async (text) => {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                return false;
+            }
+        };
+
+        // Components
+        const ContentSection = ({ title, content }) => {
+            const [copied, setCopied] = React.useState(false);
+
+            const handleCopy = async () => {
+                const success = await copyToClipboard(content);
+                if (success) {
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                }
+            };
+
+            return (
+                <div className="bg-gray-900 border border-green-500 rounded-lg p-4 mb-4">
+                    <h2 className="text-lg font-mono font-bold text-green-500 matrix-animation mb-4">
+                        {title}
+                    </h2>
+                    <div className="whitespace-pre-line text-green-500 font-mono mb-4">
+                        {content}
+                    </div>
+                    <div className="flex justify-center">
+                        <button
+                            onClick={handleCopy}
+                            className={`flex items-center gap-2 px-4 py-2 rounded font-mono
+                                ${copied ? 'bg-green-500 text-black' : 'border border-green-500 text-green-500'}`}
+                        >
+                            {copied ? 'Copied!' : 'Copy'}
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        const MenuBar = ({ activeNote, setActiveNote }) => {
+            const menuItems = ['Note', 'Greeting', 'Return', 'FQA'];
+
+            return (
+                <div className="bg-gray-900 p-4">
+                    <div className="flex flex-wrap gap-2 justify-center">
+                        {menuItems.map((item) => (
+                            <button
+                                key={item}
+                                onClick={() => setActiveNote(item)}
+                                className={`px-3 py-1 rounded font-mono
+                                    ${activeNote === item 
+                                        ? 'bg-green-500 text-black' 
+                                        : 'text-green-500 border border-green-500'}`}
+                            >
+                                {item}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [activeNote, setActiveNote] = React.useState('Note');
+
+            return (
+                <div className="min-h-screen bg-black">
+                    <div className="bg-gray-900 border-b border-green-500 p-4">
+                        <h1 className="text-2xl text-center font-mono font-bold text-green-500 matrix-animation mb-4">
+                            *6*组-NoteBy中凯
+                        </h1>
+                        <MenuBar activeNote={activeNote} setActiveNote={setActiveNote} />
+                    </div>
+                    <div className="p-4">
+                        <div className="max-w-2xl mx-auto">
+                            {notes[activeNote]?.map((section) => (
+                                <ContentSection
+                                    key={section.id}
+                                    title={section.title}
+                                    content={section.content}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
