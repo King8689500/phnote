@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Notes App - Trial Expired</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,6 +19,13 @@
             --modal-bg: rgba(3, 0, 20, 0.95);
         }
 
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -31,26 +38,6 @@
             100% { text-shadow: 0 0 7px var(--primary), 0 0 10px var(--primary), 0 0 21px var(--primary); }
         }
 
-        @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        @keyframes progress {
-            0% { width: 0; }
-            100% { width: 100%; }
-        }
-
         body {
             font-family: 'Space Grotesk', sans-serif;
             margin: 0;
@@ -60,12 +47,16 @@
             animation: gradientBG 15s ease infinite;
             color: var(--text);
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         .container {
+            width: 100%;
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
+            overflow-x: hidden;
         }
 
         .header {
@@ -74,7 +65,7 @@
         }
 
         .header h1 {
-            font-size: 4em;
+            font-size: clamp(2em, 5vw, 4em);
             margin-bottom: 5px;
             color: var(--primary);
             animation: neonPulse 2s infinite;
@@ -82,26 +73,25 @@
 
         .expired-banner {
             background: linear-gradient(135deg, var(--danger), #ff00aa);
-            padding: 5px;
+            padding: 15px;
             border-radius: 15px;
             text-align: center;
-            margin: 5px 0;
+            margin: 15px 0;
             box-shadow: 0 0 30px rgba(255, 0, 85, 0.3);
         }
 
         .pricing-cards {
-            display: flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
-            flex-wrap: wrap;
             margin-top: 40px;
+            padding: 0 10px;
         }
 
         .card {
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 30px;
-            width: 250px;
+            padding: 25px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -111,22 +101,12 @@
         }
 
         .card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             box-shadow: 0 0 50px rgba(0, 255, 157, 0.2);
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-        }
-
         .price {
-            font-size: 3em;
+            font-size: clamp(2em, 4vw, 3em);
             color: var(--primary);
             margin: 20px 0;
             font-weight: bold;
@@ -161,11 +141,14 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
+            width: 100%;
+            max-width: 200px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(0, 255, 157, 0.4);
+        .btn:active {
+            transform: scale(0.98);
         }
 
         .modal {
@@ -178,6 +161,8 @@
             background: var(--modal-bg);
             backdrop-filter: blur(10px);
             z-index: 1000;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .modal-content {
@@ -185,43 +170,46 @@
             background: var(--card-bg);
             width: 90%;
             max-width: 600px;
-            margin: 50px auto;
-            padding: 40px;
+            margin: 20px auto;
+            padding: 20px;
             border-radius: 20px;
             border: 1px solid rgba(0, 255, 157, 0.2);
         }
 
-        .payment-processor {
-            background: rgba(3, 0, 20, 0.8);
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 20px;
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text);
+            z-index: 1;
+            padding: 10px;
         }
 
         .network-selection {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
             margin: 20px 0;
-            padding: 20px;
+            padding: 15px;
         }
 
         .network-option {
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid transparent;
             border-radius: 15px;
-            padding: 10px;
+            padding: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
             position: relative;
             overflow: hidden;
+            touch-action: manipulation;
         }
 
-        .network-option:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            background: rgba(255, 255, 255, 0.15);
+        .network-option:active {
+            transform: scale(0.98);
         }
 
         .network-option.selected {
@@ -230,19 +218,15 @@
         }
 
         .network-option img {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 15px;
+            width: 40px;
+            height: 40px;
+            margin-bottom: 10px;
             transition: transform 0.3s ease;
-        }
-
-        .network-option:hover img {
-            transform: scale(1.1);
         }
 
         .network-option p {
             margin: 5px 0;
-            font-size: 1em;
+            font-size: 0.9em;
             font-weight: 500;
         }
 
@@ -253,7 +237,7 @@
             transform: translate(-50%, -50%);
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 10px;
+            padding: 20px;
             width: 90%;
             max-width: 400px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
@@ -262,6 +246,9 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .payment-popup.active {
@@ -275,7 +262,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(3, 0, 20, 0.95);
+            background: var(--modal-bg);
             backdrop-filter: blur(10px);
             z-index: 1050;
             opacity: 0;
@@ -288,18 +275,19 @@
             visibility: visible;
         }
 
-        .payment-details {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
         .qr-container {
             background: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 15px;
             width: fit-content;
             margin: 20px auto;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .qr-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
         }
 
         .payment-address {
@@ -311,25 +299,27 @@
             font-family: monospace;
             font-size: 0.9em;
             position: relative;
+            user-select: all;
+            -webkit-user-select: all;
         }
 
         .copy-button {
             background: var(--primary);
             color: var(--background);
             border: none;
-            padding: 10px 20px;
+            padding: 15px 20px;
             border-radius: 8px;
             cursor: pointer;
             margin: 10px 0;
-            font-size: 0.9em;
+            font-size: 1em;
             font-weight: 600;
             transition: all 0.3s ease;
             width: 100%;
+            touch-action: manipulation;
         }
 
-        .copy-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 255, 157, 0.3);
+        .copy-button:active {
+            transform: scale(0.98);
         }
 
         .payment-status {
@@ -341,15 +331,50 @@
         }
 
         @media (max-width: 768px) {
-            .card {
-                width: 100%;
-                margin: 10px 0;
+            .container {
+                padding: 10px;
             }
-            
+
             .modal-content {
+                margin: 10px auto;
+                padding: 15px;
+            }
+
+            .network-selection {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .payment-popup {
                 width: 95%;
-                margin: 20px auto;
+                padding: 15px;
+            }
+
+            .features li {
+                font-size: 0.9em;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
                 padding: 20px;
+            }
+
+            .network-option {
+                padding: 10px;
+            }
+
+            .network-option img {
+                width: 30px;
+                height: 30px;
+            }
+
+            .network-option p {
+                font-size: 0.8em;
             }
         }
     </style>
@@ -510,6 +535,9 @@
 
             // Show payment popup
             showPaymentPopup();
+            
+            // Close the modal after selecting network
+            closePaymentModal();
         }
 
         function showPaymentPopup() {
@@ -555,6 +583,21 @@
                         setTimeout(() => {
                             copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Address';
                         }, 2000);
+                    })
+                    .catch(() => {
+                        // Fallback for browsers that don't support clipboard API
+                        const tempInput = document.createElement('textarea');
+                        tempInput.value = currentAddress;
+                        document.body.appendChild(tempInput);
+                        tempInput.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(tempInput);
+                        
+                        const copyBtn = document.querySelector('.copy-button');
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Address';
+                        }, 2000);
                     });
             }
         }
@@ -571,11 +614,6 @@
             const modal = document.getElementById('paymentModal');
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
-            selectedNetwork = null;
-            currentAddress = null;
-            document.querySelectorAll('.network-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
         }
 
         // Close modal when clicking outside
