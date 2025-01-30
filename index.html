@@ -1,628 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Notes App - Trial Expired</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Note Website</title>
+    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
     <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        /* Modern Office Theme */
         :root {
-            --primary: #00ff9d;
-            --secondary: #4f46e5;
-            --accent: #ff00ff;
-            --background: #030014;
-            --card-bg: #0a0a2e;
-            --text: #e2e8f0;
-            --danger: #ff0055;
-            --success: #00ff9d;
-            --modal-bg: rgba(3, 0, 20, 0.95);
+            --primary: #1a5f7a;
+            --secondary: #f0f9ff;
+            --accent: #2563eb;
+            --text: #334155;
+            --background: #f8fafc;
         }
 
-        * {
-            -webkit-tap-highlight-color: transparent;
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        /* Enhanced Animations */
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        @keyframes neonPulse {
-            0% { text-shadow: 0 0 7px var(--primary), 0 0 10px var(--primary), 0 0 21px var(--primary); }
-            50% { text-shadow: 0 0 21px var(--primary), 0 0 42px var(--primary), 0 0 82px var(--primary); }
-            100% { text-shadow: 0 0 7px var(--primary), 0 0 10px var(--primary), 0 0 21px var(--primary); }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
         }
 
+
+        /* Base Styles */
         body {
-            font-family: 'Space Grotesk', sans-serif;
             margin: 0;
-            padding: 0;
-            background: linear-gradient(45deg, #030014, #0a0a2e, #1a1a4a);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background-color: var(--background);
+    font-family: 'Poppins', sans-serif; /* Poppins font */
             color: var(--text);
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
         }
 
+        /* Layout */
         .container {
-            width: 100%;
-            max-width: 1400px;
+            min-height: 100vh;
+            max-width: 42rem;
             margin: 0 auto;
-            padding: 20px;
-            overflow-x: hidden;
+            padding: 1rem;
         }
 
+        /* Header */
         .header {
-            text-align: center;
-            padding: 10px 0;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            animation: slideIn 0.5s ease-out;
         }
 
         .header h1 {
-            font-size: clamp(2em, 5vw, 4em);
-            margin-bottom: 5px;
-            color: var(--primary);
-            animation: neonPulse 2s infinite;
-        }
-
-        .expired-banner {
-            background: linear-gradient(135deg, var(--danger), #ff00aa);
-            padding: 15px;
-            border-radius: 15px;
+            color: white;
             text-align: center;
-            margin: 15px 0;
-            box-shadow: 0 0 30px rgba(255, 0, 85, 0.3);
+            margin: 0;
+            font-size: 1.875rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .pricing-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
-            padding: 0 10px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        /* Navigation */
+        .nav {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 1rem;
+            background: var(--secondary);
+            border-radius: 0.5rem;
+            position: sticky;
+            top: 1rem;
+            z-index: 10;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 50px rgba(0, 255, 157, 0.2);
-        }
-
-        .price {
-            font-size: clamp(2em, 4vw, 3em);
-            color: var(--primary);
-            margin: 20px 0;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
-        }
-
-        .features {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-            text-align: left;
-        }
-
-        .features li {
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .features li i {
-            color: var(--primary);
-            margin-right: 10px;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: var(--background);
+        .nav button {
+            padding: 0.5rem 1rem;
             border: none;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            width: 100%;
-            max-width: 200px;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--modal-bg);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .modal-content {
-            position: relative;
-            background: var(--card-bg);
-            width: 90%;
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px solid rgba(0, 255, 157, 0.2);
-        }
-
-        .close-modal {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--text);
-            z-index: 1;
-            padding: 10px;
-        }
-
-        .network-selection {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-            padding: 15px;
-        }
-
-        .network-option {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid transparent;
-            border-radius: 15px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            touch-action: manipulation;
-        }
-
-        .network-option:active {
-            transform: scale(0.98);
-        }
-
-        .network-option.selected {
-            border-color: var(--primary);
-            background: rgba(0, 255, 157, 0.1);
-        }
-
-        .network-option img {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 10px;
-            transition: transform 0.3s ease;
-        }
-
-        .network-option p {
-            margin: 5px 0;
-            font-size: 0.9em;
-            font-weight: 500;
-        }
-
-        .payment-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 20px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            z-index: 1100;
-            border: 1px solid rgba(0, 255, 157, 0.2);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            max-height: 90vh;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .payment-popup.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .payment-popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--modal-bg);
-            backdrop-filter: blur(10px);
-            z-index: 1050;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .payment-popup-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .qr-container {
-            background: white;
-            padding: 15px;
-            border-radius: 15px;
-            width: fit-content;
-            margin: 20px auto;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .qr-container img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .payment-address {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            word-break: break-all;
-            font-family: monospace;
-            font-size: 0.9em;
-            position: relative;
-            user-select: all;
-            -webkit-user-select: all;
-        }
-
-        .copy-button {
+            border-radius: 0.25rem;
             background: var(--primary);
-            color: var(--background);
-            border: none;
-            padding: 15px 20px;
-            border-radius: 8px;
+            color: white;
+    font-family: 'Poppins', sans-serif; /* Poppins font */
+
             cursor: pointer;
-            margin: 10px 0;
-            font-size: 1em;
-            font-weight: 600;
             transition: all 0.3s ease;
-            width: 100%;
-            touch-action: manipulation;
         }
 
-        .copy-button:active {
-            transform: scale(0.98);
+        .nav button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
-        .payment-status {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            background: rgba(0, 255, 157, 0.1);
-            font-weight: 500;
+        .nav button.active {
+            background: var(--accent);
+            animation: pulse 2s infinite;
         }
 
-        @media (max-width: 768px) {
+        /* Content Cards */
+        .card {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-out;
+            transition: all 0.3s ease;
+        }
+
+
+        .card h2 {
+            color: var(--primary);
+            margin: 0 0 1rem 0;
+            font-size: 1.25rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+        }
+
+        .card-content {
+            color: var(--text);
+            white-space: pre-line;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Copy Button */
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--primary);
+            border-radius: 0.25rem;
+            background: transparent;
+            color: var(--primary);
+            cursor: pointer;
+    font-family: 'Poppins', sans-serif; /* Poppins font */
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .copy-btn.copied {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
             .container {
-                padding: 10px;
+                padding: 0.5rem;
             }
-
-            .modal-content {
-                margin: 10px auto;
-                padding: 15px;
+            .header {
+                padding: 1rem;
             }
-
-            .network-selection {
-                grid-template-columns: repeat(2, 1fr);
+            .header h1 {
+                font-size: 1.5rem;
             }
-
-            .payment-popup {
-                width: 95%;
-                padding: 15px;
+            .nav {
+                padding: 0.5rem;
             }
-
-            .features li {
-                font-size: 0.9em;
-            }
-
-            .btn {
-                padding: 10px 20px;
-                font-size: 0.9em;
-            }
-        }
-
-        @media (max-width: 480px) {
             .card {
-                padding: 20px;
-            }
-
-            .network-option {
-                padding: 10px;
-            }
-
-            .network-option img {
-                width: 30px;
-                height: 30px;
-            }
-
-            .network-option p {
-                font-size: 0.8em;
+                padding: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Notes App</h1>
-            <p>Your perfect note-taking companion</p>
-        </div>
-
-        <div class="expired-banner">
-            <h2><i class="fas fa-exclamation-triangle"></i> Trial Expired</h2>
-            <p>Your free trial has ended. Choose a plan to continue!</p>
-        </div>
-
-        <div class="pricing-cards">
-            <div class="card">
-                <h2><i class="fas fa-paper-plane"></i> Starter</h2>
-                <div class="price">$10</div>
-                <ul class="features">
-                    <li><i class="fas fa-check"></i> 100 Notes</li>
-                    <li><i class="fas fa-check"></i> Basic Features</li>
-                    <li><i class="fas fa-check"></i> 5GB Storage</li>
-                    <li><i class="fas fa-check"></i> Email Support</li>
-                </ul>
-                <button class="btn" onclick="showPaymentModal('Starter', '10')">Select Plan</button>
-            </div>
-
-            <div class="card">
-                <h2><i class="fas fa-rocket"></i> Pro</h2>
-                <div class="price">$20</div>
-                <ul class="features">
-                    <li><i class="fas fa-check"></i> 500 Notes</li>
-                    <li><i class="fas fa-check"></i> Advanced Features</li>
-                    <li><i class="fas fa-check"></i> 20GB Storage</li>
-                    <li><i class="fas fa-check"></i> Priority Support</li>
-                </ul>
-                <button class="btn" onclick="showPaymentModal('Pro', '20')">Select Plan</button>
-            </div>
-
-            <div class="card">
-                <h2><i class="fas fa-diamond"></i> Business</h2>
-                <div class="price">$50</div>
-                <ul class="features">
-                    <li><i class="fas fa-check"></i> 2000 Notes</li>
-                    <li><i class="fas fa-check"></i> Premium Features</li>
-                    <li><i class="fas fa-check"></i> 100GB Storage</li>
-                    <li><i class="fas fa-check"></i> 24/7 Support</li>
-                </ul>
-                <button class="btn" onclick="showPaymentModal('Business', '50')">Select Plan</button>
-            </div>
-
-            <div class="card">
-                <h2><i class="fas fa-crown"></i> Enterprise</h2>
-                <div class="price">$100</div>
-                <ul class="features">
-                    <li><i class="fas fa-check"></i> Unlimited Notes</li>
-                    <li><i class="fas fa-check"></i> All Features</li>
-                    <li><i class="fas fa-check"></i> Unlimited Storage</li>
-                    <li><i class="fas fa-check"></i> Dedicated Support</li>
-                </ul>
-                <button class="btn" onclick="showPaymentModal('Enterprise', '100')">Select Plan</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Payment Modal -->
-    <div id="paymentModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closePaymentModal()">&times;</span>
-            <h2><i class="fas fa-robot"></i> Crypto Payment System</h2>
-            
-            <div class="payment-processor">
-                <div id="paymentDetails"></div>
-
-                <div class="network-selection" id="networkSelection">
-                    <div class="network-option" data-network="BTC" data-address="bc1qt8e9l24zr5lmy583caf8fnenlhfsrkashad5z7">
-                        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="BTC">
-                        <p>Bitcoin</p>
-                        <p>BTC</p>
-                    </div>
-                    <div class="network-option" data-network="ETH" data-address="0xAA5f427c77ca94E8f623FCbC044D50c2bD2c40A3">
-                        <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="ETH">
-                        <p>Ethereum</p>
-                        <p>ETH</p>
-                    </div>
-                    <div class="network-option" data-network="BNB" data-address="0xAA5f427c77ca94E8f623FCbC044D50c2bD2c40A3">
-                        <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="BNB">
-                        <p>Binance</p>
-                        <p>BNB</p>
-                    </div>
-                    <div class="network-option" data-network="USDT" data-address="TSoEXpvL4Q1GjYsPY1bJtbPtfV7KNjPjTg">
-                        <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT">
-                        <p>Tether</p>
-                        <p>USDT (Tron)</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Payment Popup -->
-    <div class="payment-popup-overlay" id="paymentPopupOverlay"></div>
-    <div class="payment-popup" id="paymentPopup">
-        <div class="payment-details" id="popupPaymentDetails"></div>
-        <div class="qr-container" id="qrCode"></div>
-        <div class="payment-address" id="paymentAddress"></div>
-        <button class="copy-button" onclick="copyAddress()">
-            <i class="fas fa-copy"></i> Copy Address
-        </button>
-        <div class="payment-status" id="paymentStatus"></div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <div id="root"></div>
     <script>
-        let selectedNetwork = null;
-        let currentAddress = null;
-        let currentPlan = null;
-        let currentAmount = null;
+        // Notes data
+       const notes = {
+    "Note": [
+        {
+            "id": "best-practices",
+            "title": "Greeting",
+            "content": "Hi! Nice to meet you. I'm Maria from Kelly Services Company. We're currently looking for a part-time remote employee. May I share the job details with you?"
+        },
+        {
+            "id": "best-practices1",
+            "title": "Job Opportunity + Requirements",
+            "content": "Okay! Work 30-60 minutes and earn between $200-$600 per day.\n- Is this number the same as your WhatsApp number?\n- No experience required.\n- Must be 25+ with a SSN."
+        },
+        {
+            "id": "best-practices3",
+            "title": "Return",
+            "content": "If you meet the above requirements, would you like more details about the job?"
+        },
+        {
+            "id": "job-offer",
+            "title": "Return",
+            "content": "May I get your response, please, if you meet the requirements above?"
+        },
+        {
+            "id": "or",
+            "title": "END",
+            "content": "Okay! The relevant department will contact you within 24 hours via WhatsApp, and you can check if it's a good fit for you. Have a nice day!"
+        }
+    ]
+};
 
-        function showPaymentModal(plan, amount) {
-            currentPlan = plan;
-            currentAmount = amount;
-            const modal = document.getElementById('paymentModal');
-            const paymentDetails = document.getElementById('paymentDetails');
-            
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
 
-            paymentDetails.innerHTML = `
-                <div style="text-align: center; margin: 20px 0;">
-                    <h3>Payment Details</h3>
-                    <p>Plan: ${plan}</p>
-                    <p>Amount: $${amount}</p>
-                    <p>Select your preferred payment network:</p>
-                </div>
-            `;
+        // Components
+        function App() {
+            const [activeNote, setActiveNote] = React.useState('Note');
 
-            // Add click events to network options
-            document.querySelectorAll('.network-option').forEach(option => {
-                option.addEventListener('click', () => selectNetwork(option));
-            });
+            return React.createElement('div', { className: 'container' }, [
+                React.createElement('header', { className: 'header', key: 'header' },
+                    React.createElement('h1', null, '*PHONE SMS NOTE*')
+                ),
+                React.createElement(Navigation, {
+                    activeNote,
+                    setActiveNote,
+                    key: 'nav'
+                }),
+                React.createElement(Content, {
+                    notes: notes[activeNote],
+                    key: 'content'
+                })
+            ]);
         }
 
-        function selectNetwork(element) {
-            // Remove previous selection
-            document.querySelectorAll('.network-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-
-            // Add selection to clicked element
-            element.classList.add('selected');
-
-            // Update selected network and address
-            selectedNetwork = element.dataset.network;
-            currentAddress = element.dataset.address;
-
-            // Show payment popup
-            showPaymentPopup();
-            
-            // Close the modal after selecting network
-            closePaymentModal();
+        function Navigation({ activeNote, setActiveNote }) {
+            return React.createElement('nav', { className: 'nav' },
+                ['Note', 'Greeting', 'Return', 'FQA'].map(item =>
+                    React.createElement('button', {
+                        key: item,
+                        className: activeNote === item ? 'active' : '',
+                        onClick: () => setActiveNote(item)
+                    }, item)
+                )
+            );
         }
 
-        function showPaymentPopup() {
-            const popup = document.getElementById('paymentPopup');
-            const overlay = document.getElementById('paymentPopupOverlay');
-            const popupDetails = document.getElementById('popupPaymentDetails');
-            
-            // Update popup content
-            popupDetails.innerHTML = `
-                <h3>${selectedNetwork} Payment</h3>
-                <p>Plan: ${currentPlan}</p>
-                <p>Amount: $${currentAmount}</p>
-            `;
-
-            // Generate QR code
-            const qrCode = document.getElementById('qrCode');
-            const qr = qrcode(0, 'M');
-            qr.addData(currentAddress);
-            qr.make();
-            qrCode.innerHTML = qr.createImgTag(5);
-
-            // Update payment address
-            const paymentAddress = document.getElementById('paymentAddress');
-            paymentAddress.textContent = currentAddress;
-
-            // Update status
-            const paymentStatus = document.getElementById('paymentStatus');
-            paymentStatus.innerHTML = `Waiting for ${selectedNetwork} payment...`;
-
-            // Show popup and overlay
-            popup.classList.add('active');
-            overlay.classList.add('active');
-
-            simulatePaymentCheck(paymentStatus);
-        }
-
-        function copyAddress() {
-            if (currentAddress) {
-                navigator.clipboard.writeText(currentAddress)
-                    .then(() => {
-                        const copyBtn = document.querySelector('.copy-button');
-                        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                        setTimeout(() => {
-                            copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Address';
-                        }, 2000);
+        function Content({ notes }) {
+            return React.createElement('main', null,
+                notes?.map(note =>
+                    React.createElement(Card, {
+                        key: note.id,
+                        title: note.title,
+                        content: note.content
                     })
-                    .catch(() => {
-                        // Fallback for browsers that don't support clipboard API
-                        const tempInput = document.createElement('textarea');
-                        tempInput.value = currentAddress;
-                        document.body.appendChild(tempInput);
-                        tempInput.select();
-                        document.execCommand('copy');
-                        document.body.removeChild(tempInput);
-                        
-                        const copyBtn = document.querySelector('.copy-button');
-                        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                        setTimeout(() => {
-                            copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Address';
-                        }, 2000);
-                    });
-            }
+                )
+            );
         }
 
-        function simulatePaymentCheck(statusElement) {
-            let dots = '';
-            const interval = setInterval(() => {
-                dots = dots.length >= 3 ? '' : dots + '.';
-                statusElement.innerHTML = `Waiting for ${selectedNetwork} payment${dots}`;
-            }, 500);
+        function Card({ title, content }) {
+            const [copied, setCopied] = React.useState(false);
+
+            const copyToClipboard = async () => {
+                try {
+                    await navigator.clipboard.writeText(content);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                } catch (err) {
+                    console.error('Failed to copy:', err);
+                }
+            };
+
+            return React.createElement('div', { className: 'card' }, [
+                React.createElement('h2', { key: 'title' }, title),
+                React.createElement('div', { className: 'card-content', key: 'content' }, content),
+                React.createElement('button', {
+                    className: `copy-btn ${copied ? 'copied' : ''}`,
+                    onClick: copyToClipboard,
+                    key: 'button'
+                }, copied ? 'Copied!' : 'Copy')
+            ]);
         }
 
-        function closePaymentModal() {
-            const modal = document.getElementById('paymentModal');
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('paymentModal');
-            if (event.target == modal) {
-                closePaymentModal();
-            }
-        }
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(React.StrictMode, null,
+            React.createElement(App)
+        ));
     </script>
 </body>
 </html>
