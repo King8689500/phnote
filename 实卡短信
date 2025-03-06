@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Note Website</title>
+    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        /* Modern Office Theme */
+        :root {
+            --primary: #1a5f7a;
+            --secondary: #f0f9ff;
+            --accent: #2563eb;
+            --text: #334155;
+            --background: #f8fafc;
+        }
+
+        /* Enhanced Animations */
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+
+
+        /* Base Styles */
+        body {
+            margin: 0;
+            background-color: var(--background);
+    font-family: 'Poppins', sans-serif; /* Poppins font */
+            color: var(--text);
+        }
+
+        /* Layout */
+        .container {
+            min-height: 100vh;
+            max-width: 42rem;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .header h1 {
+            color: white;
+            text-align: center;
+            margin: 0;
+            font-size: 1.875rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 1rem;
+            background: var(--secondary);
+            border-radius: 0.5rem;
+            position: sticky;
+            top: 1rem;
+            z-index: 10;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            background: var(--primary);
+            color: white;
+    font-family: 'Poppins', sans-serif; /* Poppins font */
+
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .nav button.active {
+            background: var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        /* Content Cards */
+        .card {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-out;
+            transition: all 0.3s ease;
+        }
+
+
+        .card h2 {
+            color: var(--primary);
+            margin: 0 0 1rem 0;
+            font-size: 1.25rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+        }
+
+        .card-content {
+            color: var(--text);
+            white-space: pre-line;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Copy Button */
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--primary);
+            border-radius: 0.25rem;
+            background: transparent;
+            color: var(--primary);
+            cursor: pointer;
+    font-family: 'Poppins', sans-serif; /* Poppins font */
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .copy-btn.copied {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            .container {
+                padding: 0.5rem;
+            }
+            .header {
+                padding: 1rem;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .nav {
+                padding: 0.5rem;
+            }
+            .card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        // Notes data
+       const notes = {
+    "Note": [
+        {
+            "id": "best-practices",
+            "title": "Greeting",
+            "content": "My name is Hannah from Randstad USA. We are recruiting part-time employees for data marketing companies. You can work at home in your spare time.
+                        Benefits and requirements:
+                      - Working hours: 1-2 hours
+                      - Income: 100-600 US
+                      - Work location: unlimited
+                      - U.S. citizens and 25 years old and above Do you fully meet the above requirements?
+                        A: Yes
+                        B: No"
+        },
+        {
+            "id": "best-practices1",
+            "title": "Job Opportunity + Requirements",
+            "content": "Okay! Well, is this your usual WhatsApp number? Can I ask the person in charge to send you the job vacancies and salary list through WhatsApp"
+        },
+        {
+            "id": "best-practices3",
+            "title": "Return",
+            "content": "If you meet the above requirements, would you like more details about the job?"
+        },
+        {
+            "id": "job-offer",
+            "title": "Return",
+            "content": "May I get your response, please, if you meet the requirements above?"
+        },
+        {
+            "id": "or",
+            "title": "END",
+            "content": "Okay! The person in charge of this position will add your WhatsApp within 24 hours. Please pay attention to check your WhatsApp messages."
+        }
+    ]
+};
+
+
+        // Components
+        function App() {
+            const [activeNote, setActiveNote] = React.useState('Note');
+
+            return React.createElement('div', { className: 'container' }, [
+                React.createElement('header', { className: 'header', key: 'header' },
+                    React.createElement('h1', null, '*PHONE SMS NOTE*')
+                ),
+                React.createElement(Navigation, {
+                    activeNote,
+                    setActiveNote,
+                    key: 'nav'
+                }),
+                React.createElement(Content, {
+                    notes: notes[activeNote],
+                    key: 'content'
+                })
+            ]);
+        }
+
+        function Navigation({ activeNote, setActiveNote }) {
+            return React.createElement('nav', { className: 'nav' },
+                ['Note', 'Greeting', 'Return', 'FQA'].map(item =>
+                    React.createElement('button', {
+                        key: item,
+                        className: activeNote === item ? 'active' : '',
+                        onClick: () => setActiveNote(item)
+                    }, item)
+                )
+            );
+        }
+
+        function Content({ notes }) {
+            return React.createElement('main', null,
+                notes?.map(note =>
+                    React.createElement(Card, {
+                        key: note.id,
+                        title: note.title,
+                        content: note.content
+                    })
+                )
+            );
+        }
+
+        function Card({ title, content }) {
+            const [copied, setCopied] = React.useState(false);
+
+            const copyToClipboard = async () => {
+                try {
+                    await navigator.clipboard.writeText(content);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                } catch (err) {
+                    console.error('Failed to copy:', err);
+                }
+            };
+
+            return React.createElement('div', { className: 'card' }, [
+                React.createElement('h2', { key: 'title' }, title),
+                React.createElement('div', { className: 'card-content', key: 'content' }, content),
+                React.createElement('button', {
+                    className: `copy-btn ${copied ? 'copied' : ''}`,
+                    onClick: copyToClipboard,
+                    key: 'button'
+                }, copied ? 'Copied!' : 'Copy')
+            ]);
+        }
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(React.StrictMode, null,
+            React.createElement(App)
+        ));
+    </script>
+</body>
+</html>
