@@ -195,7 +195,10 @@
         {
             "id": "best-practices1",
             "title": "Job Opportunity + Requirements",
-            "content": "Okay! Well, is this your usual WhatsApp number? Can I ask the person in charge to send you the job vacancies and salary list through WhatsApp"
+            "content": "Okay! Before sharing this great opportunity, would you mind confirming if you meet these basic requirements?
+1. Valid SSN with legal work authorization
+2. Active WhatsApp account linked to your current phone number
+3. Minimum 24 years of age"
         },
         {
             "id": "best-practices3",
