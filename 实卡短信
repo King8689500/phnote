@@ -190,14 +190,7 @@
         {
             "id": "best-practices",
             "title": "Greeting",
-            "content": "My name is Hannah from Randstad USA. We are recruiting part-time employees for data marketing companies. You can work at home in your spare time.
-                        Benefits and requirements:
-                      - Working hours: 1-2 hours
-                      - Income: 100-600 US
-                      - Work location: unlimited
-                      - U.S. citizens and 25 years old and above Do you fully meet the above requirements?
-                        A: Yes
-                        B: No"
+            "content": "Hello, this is Stella from Randstad, the staffing agency.We currently have a job opening that may be a perfect fit for you. May I send you the position details?
         },
         {
             "id": "best-practices1",
