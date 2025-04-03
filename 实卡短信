@@ -190,15 +190,13 @@
         {
             "id": "best-practices",
             "title": "Greeting",
-            "content": "Hello, this is Stella from Randstad, the staffing agency.We currently have a job opening that may be a perfect fit for you. May I send you the position details?
-        },
+            "content": "Hi! I'm Mackenzie from Randstad in the United States. Interested in a remote position? I can provide you with more information."
         {
             "id": "best-practices1",
             "title": "Job Opportunity + Requirements",
-            "content": "Okay! Before sharing this great opportunity, would you mind confirming if you meet these basic requirements?
-1. Valid SSN with legal work authorization
-2. Active WhatsApp account linked to your current phone number
-3. Minimum 24 years of age"
+            "content": "Okay! We are looking for part-time or full-time remote work with 0.5 to 1 hours and an income of $100-400 (including work bonus).
+- Must be between 25 - 80 years old.
+- U.S. Citizen or hold a SSN?"
         },
         {
             "id": "best-practices3",
@@ -213,7 +211,7 @@
         {
             "id": "or",
             "title": "END",
-            "content": "Thank you, The employer will send you a message on WhatsApp as soon as possible and provide you with free training You can also get a bonus of 80-200USD. Don't forget to check it out. Best Regards"
+            "content": "Okay! Our HR department will contact you via WhatsApp soon and provide you with free training, please keep an eye on your WhatsApp messages. Have a nice day!"
         }
     ]
 };
