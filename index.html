@@ -1,211 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Note Website</title>
-    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-        /* Theme */
-        :root {
-            --primary: #1a5f7a;
-            --secondary: #f0f9ff;
-            --accent: #2563eb;
-            --text: #334155;
-            --background: #f8fafc;
-        }
-
-        body {
-            margin: 0;
-            background-color: var(--background);
-            font-family: 'Poppins', sans-serif;
-            color: var(--text);
-        }
-
-        .container {
-            min-height: 100vh;
-            max-width: 42rem;
-            margin: 0 auto;
-            padding: 1rem;
-        }
-
-        .header {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            color: white;
-        }
-
-        .nav {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            background: var(--secondary);
-            padding: 1rem;
-            border-radius: 0.5rem;
-            position: sticky;
-            top: 1rem;
-            z-index: 10;
-        }
-
-        .nav button {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 0.25rem;
-            background: var(--primary);
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nav button.active {
-            background: var(--accent);
-        }
-
-        .card {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .copy-btn {
-            margin-left: auto;
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--primary);
-            background: transparent;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .copy-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .copy-btn.copied {
-            background: var(--accent);
-            color: white;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Note Website</title>
+  <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+    :root {
+      --primary: #1a5f7a;
+      --secondary: #f0f9ff;
+      --accent: #2563eb;
+      --text: #334155;
+      --background: #f8fafc;
+    }
+    body {
+      margin: 0;
+      background-color: var(--background);
+      font-family: 'Poppins', sans-serif;
+      color: var(--text);
+    }
+    .container {
+      min-height: 100vh;
+      max-width: 42rem;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: white;
+    }
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--secondary);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      position: sticky;
+      top: 1rem;
+      z-index: 10;
+    }
+    .nav button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.25rem;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .nav button.active {
+      background: var(--accent);
+    }
+    .card {
+      background: white;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .copy-btn {
+      margin-left: auto;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--primary);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .copy-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+    .copy-btn.copied {
+      background: var(--accent);
+      color: white;
+    }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
-    <script>
-        // Notes Data
-        const notes = {
-            "Note": [
-                {
-                    "id": "greeting",
-                    "title": "Greeting",
-                    "content": "Yes I'm Shirley fromRandstad staffing We have a Job opening that may be perfect for you. May I send you the job details, please?"
-                },
-                {
-                    "id": "job-opportunity",
-                    "title": "Job Opportunity + Requirements",
-                    "content": "Okay! Before sharing this great opportunity, would you mind confirming if you meet these basic requirements?\n1. Valid SSN with legal work authorization\n2. Minimum 25 years of age. Just answer "YES" if you meet these requirements."
-                },
-                {
-                     "id": "job-opportunity",
-                    "title": "Job Opportunity + Requirements",
-                    "content": "Well! But I would like to know if you are interested and fully meet the requirements:\n1. US citizens or people living in the US have an SSN card.\n2. Age 25 and above. Please confirm (yes) if you meet the above requirements."
-                },
-                {
-                    "id": "return1",
-                    "title": "Return",
-                    "content": "Yeah this is part time job you can do it. Work 30-60 minutes/ day, $100-$400.Kindly confirm, Yes or no?"
-                },
-                {
-                    "id": "return2",
-                    "title": "Follow-up",
-                    "content": "May I get your response, please, if you meet the requirements above?"
-                },
-                {
-                    "id": "end",
-                    "title": "END",
-                    "content": "Great. A training manager will contact you via What's-APP soon and provide you with free training. You can also get a bonus of 100-650$. Thank for your time."
-                }
-            ]
-        };
+  <div id="root"></div>
 
-        // Components
-        function App() {
-            const [activeNote, setActiveNote] = React.useState('Note');
-
-            return React.createElement('div', { className: 'container' }, [
-                React.createElement('header', { className: 'header', key: 'header' },
-                    React.createElement('h1', null, '*PHONE SMS NOTE*')
-                ),
-                React.createElement(Navigation, {
-                    activeNote,
-                    setActiveNote,
-                    key: 'nav'
-                }),
-                React.createElement(Content, {
-                    notes: notes[activeNote],
-                    key: 'content'
-                })
-            ]);
+  <script type="text/javascript">
+    const notes = {
+      "Note": [
+        {
+          id: "greeting",
+          title: "Greeting",
+          content: "Yes I'm Shirley from Randstad staffing. We have a Job opening that may be perfect for you. May I send you the job details, please?"
+        },
+        {
+          id: "job-opportunity-1",
+          title: "Job Opportunity + Requirements",
+          content: "Okay! Before sharing this great opportunity, would you mind confirming if you meet these basic requirements?\n1. Valid SSN with legal work authorization\n2. Minimum 25 years of age. Just answer 'YES' if you meet these requirements."
+        },
+        {
+          id: "job-opportunity-2",
+          title: "Job Opportunity + Requirements (Alternate)",
+          content: "Well! But I would like to know if you are interested and fully meet the requirements:\n1. US citizens or people living in the US have an SSN card.\n2. Age 25 and above. Please confirm (yes) if you meet the above requirements."
+        },
+        {
+          id: "return1",
+          title: "Return",
+          content: "Yeah, this is a part-time job you can do. Work 30-60 minutes/day, $100-$400. Kindly confirm, Yes or no?"
+        },
+        {
+          id: "return2",
+          title: "Follow-up",
+          content: "May I get your response, please, if you meet the requirements above?"
+        },
+        {
+          id: "end",
+          title: "END",
+          content: "Great. A training manager will contact you via WhatsApp soon and provide you with free training. You can also get a bonus of $100-$650. Thank you for your time."
         }
+      ]
+    };
 
-        function Navigation({ activeNote, setActiveNote }) {
-            return React.createElement('nav', { className: 'nav' },
-                Object.keys(notes).map(item =>
-                    React.createElement('button', {
-                        key: item,
-                        className: activeNote === item ? 'active' : '',
-                        onClick: () => setActiveNote(item)
-                    }, item)
-                )
-            );
+    function App() {
+      const [activeNote, setActiveNote] = React.useState('Note');
+
+      return React.createElement('div', { className: 'container' }, [
+        React.createElement('header', { className: 'header', key: 'header' },
+          React.createElement('h1', null, '*PHONE SMS NOTE*')
+        ),
+        React.createElement(Navigation, { activeNote, setActiveNote, key: 'nav' }),
+        React.createElement(Content, { notes: notes[activeNote], key: 'content' })
+      ]);
+    }
+
+    function Navigation({ activeNote, setActiveNote }) {
+      return React.createElement('nav', { className: 'nav' },
+        Object.keys(notes).map(item =>
+          React.createElement('button', {
+            key: item,
+            className: activeNote === item ? 'active' : '',
+            onClick: () => setActiveNote(item)
+          }, item)
+        )
+      );
+    }
+
+    function Content({ notes }) {
+      return React.createElement('main', null,
+        notes.map(note =>
+          React.createElement(Card, {
+            key: note.id,
+            title: note.title,
+            content: note.content
+          })
+        )
+      );
+    }
+
+    function Card({ title, content }) {
+      const [copied, setCopied] = React.useState(false);
+
+      const copyToClipboard = async () => {
+        try {
+          await navigator.clipboard.writeText(content);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+          console.error('Failed to copy:', err);
         }
+      };
 
-        function Content({ notes }) {
-            return React.createElement('main', null,
-                notes?.map(note =>
-                    React.createElement(Card, {
-                        key: note.id,
-                        title: note.title,
-                        content: note.content
-                    })
-                )
-            );
-        }
+      return React.createElement('div', { className: 'card' }, [
+        React.createElement('h2', { key: 'title' }, title),
+        React.createElement('div', { className: 'card-content', key: 'content' }, content),
+        React.createElement('button', {
+          className: `copy-btn ${copied ? 'copied' : ''}`,
+          onClick: copyToClipboard,
+          key: 'button'
+        }, copied ? 'Copied!' : 'Copy')
+      ]);
+    }
 
-        function Card({ title, content }) {
-            const [copied, setCopied] = React.useState(false);
-
-            const copyToClipboard = async () => {
-                try {
-                    await navigator.clipboard.writeText(content);
-                    setCopied(true);
-                    setTimeout(() => setCopied(false), 2000);
-                } catch (err) {
-                    console.error('Failed to copy:', err);
-                }
-            };
-
-            return React.createElement('div', { className: 'card' }, [
-                React.createElement('h2', { key: 'title' }, title),
-                React.createElement('div', { className: 'card-content', key: 'content' }, content),
-                React.createElement('button', {
-                    className: `copy-btn ${copied ? 'copied' : ''}`,
-                    onClick: copyToClipboard,
-                    key: 'button'
-                }, copied ? 'Copied!' : 'Copy')
-            ]);
-        }
-
-        // Render the app
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(React.createElement(React.StrictMode, null,
-            React.createElement(App)
-        ));
-    </script>
+    ReactDOM.render(
+      React.createElement(React.StrictMode, null, React.createElement(App)),
+      document.getElementById('root')
+    );
+  </script>
 </body>
 </html>
