@@ -15,18 +15,21 @@
       --text: #334155;
       --background: #f8fafc;
     }
+
     body {
       margin: 0;
       background-color: var(--background);
       font-family: 'Poppins', sans-serif;
       color: var(--text);
     }
+
     .container {
       min-height: 100vh;
       max-width: 42rem;
       margin: 0 auto;
       padding: 1rem;
     }
+
     .header {
       background: linear-gradient(135deg, var(--primary), var(--accent));
       padding: 1.5rem;
@@ -35,6 +38,7 @@
       text-align: center;
       color: white;
     }
+
     .nav {
       display: flex;
       justify-content: center;
@@ -46,6 +50,7 @@
       top: 1rem;
       z-index: 10;
     }
+
     .nav button {
       padding: 0.5rem 1rem;
       border: none;
@@ -55,9 +60,11 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
+
     .nav button.active {
       background: var(--accent);
     }
+
     .card {
       background: white;
       border-radius: 0.5rem;
@@ -65,6 +72,7 @@
       margin-bottom: 1rem;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
+
     .copy-btn {
       margin-left: auto;
       padding: 0.5rem 1rem;
@@ -73,10 +81,12 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
+
     .copy-btn:hover {
       background: var(--primary);
       color: white;
     }
+
     .copy-btn.copied {
       background: var(--accent);
       color: white;
@@ -100,9 +110,9 @@
           content: "Okay! Before sharing this great opportunity, would you mind confirming if you meet these basic requirements?\n1. Valid SSN with legal work authorization\n2. Minimum 25 years of age. Just answer 'YES' if you meet these requirements."
         },
         {
-         id: "job-opportunity-2",
-         title: "Job Opportunity + Requirements",
-         content: "First, please confirm if you meet these requirements?\n1. Age 25 or holder\n2. US resident, S.S.N. holder. Please reply A for Eligible or B for Can't meet."
+          id: "job-opportunity-2",
+          title: "Job Opportunity + Requirements",
+          content: "First, please confirm if you meet these requirements?\n1. Age 25 or holder\n2. US resident, S.S.N. holder. Please reply A for Eligible or B for Can't meet."
         },
         {
           id: "job-opportunity-3",
@@ -128,36 +138,36 @@
     };
 
     function App() {
-      const [activeNote, setActiveNote] = React.useState('Note');
+      const [activeNote, setActiveNote] = React.useState("Note");
 
-      return React.createElement('div', { className: 'container' }, [
-        React.createElement('header', { className: 'header', key: 'header' },
-          React.createElement('h1', null, '*PHONE SMS NOTE*')
+      return React.createElement("div", { className: "container" }, [
+        React.createElement("header", { className: "header", key: "header" },
+          React.createElement("h1", null, "*PHONE SMS NOTE*")
         ),
-        React.createElement(Navigation, { activeNote, setActiveNote, key: 'nav' }),
-        React.createElement(Content, { notes: notes[activeNote], key: 'content' })
+        React.createElement(Navigation, { activeNote, setActiveNote, key: "nav" }),
+        React.createElement(Content, { notes: notes[activeNote], key: "content" })
       ]);
     }
 
     function Navigation({ activeNote, setActiveNote }) {
-      return React.createElement('nav', { className: 'nav' },
-        Object.keys(notes).map(item =>
-          React.createElement('button', {
+      return React.createElement("nav", { className: "nav" },
+        Object.keys(notes).map((item) =>
+          React.createElement("button", {
             key: item,
-            className: activeNote === item ? 'active' : '',
-            onClick: () => setActiveNote(item)
+            className: activeNote === item ? "active" : "",
+            onClick: () => setActiveNote(item),
           }, item)
         )
       );
     }
 
     function Content({ notes }) {
-      return React.createElement('main', null,
-        notes.map(note =>
+      return React.createElement("main", null,
+        notes.map((note) =>
           React.createElement(Card, {
             key: note.id,
             title: note.title,
-            content: note.content
+            content: note.content,
           })
         )
       );
@@ -172,24 +182,24 @@
           setCopied(true);
           setTimeout(() => setCopied(false), 2000);
         } catch (err) {
-          console.error('Failed to copy:', err);
+          console.error("Failed to copy:", err);
         }
       };
 
-      return React.createElement('div', { className: 'card' }, [
-        React.createElement('h2', { key: 'title' }, title),
-        React.createElement('div', { className: 'card-content', key: 'content' }, content),
-        React.createElement('button', {
-          className: `copy-btn ${copied ? 'copied' : ''}`,
+      return React.createElement("div", { className: "card" }, [
+        React.createElement("h2", { key: "title" }, title),
+        React.createElement("div", { className: "card-content", key: "content" }, content),
+        React.createElement("button", {
+          className: `copy-btn ${copied ? "copied" : ""}`,
           onClick: copyToClipboard,
-          key: 'button'
-        }, copied ? 'Copied!' : 'Copy')
+          key: "button",
+        }, copied ? "Copied!" : "Copy"),
       ]);
     }
 
     ReactDOM.render(
       React.createElement(React.StrictMode, null, React.createElement(App)),
-      document.getElementById('root')
+      document.getElementById("root")
     );
   </script>
 </body>
